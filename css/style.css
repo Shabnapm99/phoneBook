@@ -1,0 +1,33 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+/* #searchButton{
+
+} */
+
+p{
+    margin: 0;
+}
+
+.bg-grey{
+    background-color: rgb(153, 154, 154);
+
+}
+
+.text-grey{
+    color:rgb(153, 154, 154);
+}
+
+#profileImage svg{
+    width: 12.5em;
+}
+#addDetails input{
+      border: none;
+      border-bottom: 1px solid grey;
+}
+
+#profileNName .bi-person-circle{
+  width:8em;
+}
