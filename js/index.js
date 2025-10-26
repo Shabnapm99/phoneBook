@@ -3,7 +3,13 @@
 async function fetchContacts() {
 
     let contactsList = document.getElementById('contactsList');//reference of parent element <ul>
-    let contactDetails = document.getElementById('addNew');//refrence of contact details view div
+    let contactDetails = document.getElementById('contactDetails');//refrence of contact details view div
+    let contactListingPage = document.getElementById('contactListingPage');////refrence of contact listing view div
+    let nameOfUser = document.getElementById('name');
+    let phoneNumber = document.getElementById('phoneNumber');
+    let emailId = document.getElementById('emailId');
+    let goBack = document.getElementById('exitIcon');
+    let deleteButton = document.getElementById('deleteButton');
 
     try {
 
@@ -47,11 +53,32 @@ async function fetchContacts() {
 
             // To show all the details on clicking a list item add event listener
 
-            contactListItem.addEventListener("click",(event)=>{
-                
-                contactDetails.className = 'd-block';
+            contactListItem.addEventListener("click", (event) => {
+                contactListingPage.classList = 'd-none';
+                contactDetails.classList = 'd-block';
+                nameOfUser.textContent = `${name}`;
+                phoneNumber.textContent = `${phone}`;
+                emailId.textContent = `${email}`;
+
 
             })
+
+        // Go back to listing page from contact details page 
+
+        goBack.addEventListener("click",(e)=>{
+            contactListingPage.classList = 'd-block';
+            contactDetails.classList = 'd-none';
+            contactListItem.name.remove();
+        })
+
+        //delete a contact
+          deleteButton.addEventListener("click",(e)=>{
+            contactDetails.classList = 'd-none';
+            contactListingPage.classList = 'd-block';
+
+
+          })
+
 
         }
     } catch (error) {
