@@ -10,6 +10,14 @@ async function fetchContacts() {
     let emailId = document.getElementById('emailId');
     let goBack = document.getElementById('exitIcon');
     let deleteButton = document.getElementById('deleteButton');
+    let addNewContact = document.getElementById('addNewContact');
+    let addButton = document.getElementById('addButton');
+    let phoneNum = document.getElementById('phoneNumberInput');
+    let fName = document.getElementById('fNameInput');
+    let lName = document.getElementById('lNameInput');
+    let email = document.getElementById('emailInput');
+    let doneButton = document.getElementById('doneButton');
+    let cancelButton = document.getElementById('cancelButton');
 
     try {
 
@@ -23,24 +31,26 @@ async function fetchContacts() {
 
         console.log(typeof contacts);
         console.log(contacts);
+        display(contacts);
 
         // Loop through the contacts
 
-        for (let i = 0; i < contacts.length; i++) {
+        function display(contacts) {
+            for (let i = 0; i < contacts.length; i++) {
 
-            console.log(contacts[i]);
+                console.log(contacts[i]);
 
-            // Store the details to variable
+                // Store the details to variable
 
-            let name = contacts[i].name;
-            let phone = contacts[i].phone;
-            let email = contacts[i].email;
+                let name = contacts[i].name;
+                let phone = contacts[i].phone;
+                let email = contacts[i].email;
 
-            // create an elemenet <li> under <ul> to occupy each contact
+                // create an elemenet <li> under <ul> to occupy each contact
 
-            const contactListItem = document.createElement("li");
-            contactListItem.className = 'list-group-item d-flex align-items-center gap-2'
-            contactListItem.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                const contactListItem = document.createElement("li");
+                contactListItem.className = 'list-group-item d-flex align-items-center gap-2'
+                contactListItem.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                         class="bi bi-person-circle" viewBox="0 0 16 16">
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                                         <path fill-rule="evenodd"
@@ -48,42 +58,96 @@ async function fetchContacts() {
                                     </svg>
                                     <p id="contactName">${name}</p>`
 
-            // append li to ul
-            contactsList.appendChild(contactListItem);
+                // append li to ul
+                contactsList.appendChild(contactListItem);
 
-            // To show all the details on clicking a list item add event listener
+                // To show all the details on clicking a list item add event listener
 
-            contactListItem.addEventListener("click", (event) => {
-                contactListingPage.classList = 'd-none';
-                contactDetails.classList = 'd-block';
-                nameOfUser.textContent = `${name}`;
-                phoneNumber.textContent = `${phone}`;
-                emailId.textContent = `${email}`;
+                contactListItem.addEventListener("click", (event) => {
+                    contactListingPage.classList = 'd-none';
+                    contactDetails.classList = 'd-block';
+                    nameOfUser.textContent = `${name}`;
+                    phoneNumber.textContent = `${phone}`;
+                    emailId.textContent = `${email}`;
 
+
+                })
+
+                // Go back to listing page from contact details page 
+
+                goBack.addEventListener("click", (e) => {
+                    contactListingPage.classList = 'd-block bg-secondary mt-3';
+                    contactDetails.classList = 'd-none';
+
+                })
+
+                //delete a contact
+                deleteButton.addEventListener("click", (e) => {
+                    contactDetails.classList = 'd-none';
+                    contactListingPage.classList = 'd-block bg-secondary mt-3';
+                    // contacts.splice(i,1);
+                    contactListItem.remove()// this is removing all
+                    //contactListItem.removeChild(contactListItem);not working
+                    //yet to be implemented
+
+                })
+
+                // contactListItem.addEventListener("dblclick",()=>{
+                //     contactListItem.remove();
+                // })
+
+
+            }
+        }
+
+
+        //Add contact
+
+        addButton.addEventListener("click", (e) => {
+            contactListingPage.classList = 'd-none';
+            addNewContact.classList = 'd-block';
+            // doneButton.className = 'btn text-primary'
+
+            doneButton.addEventListener("click", (e) => {
+                contacts = []; //make the array empty first otherwise it will show first array view plus the replaced array. in this case it will show 21 elemenet if we didn't empty the array here
+                const num = phoneNum.value;
+                
+                const firstName = fName.value;
+                const lastName = lName.value;
+                const mail = email.value;
+                if(num==='' || firstName===""){
+                    document.getElementById('alertBox').classList = 'd-block alert alert-dark';
+                    return;
+                }
+                let contact = {
+                    phone: `${num}`,
+                    name: `${firstName} ${lastName}`,
+                    email: `${mail}`
+                };
+                console.log(contact);
+                contacts.push(contact);
+                console.log(contacts);
+                display(contacts);
+                contactListingPage.classList = 'd-block bg-secondary mt-3';
+                addNewContact.classList = 'd-none';
 
             })
+            //cancel button in add new conyact page
+            cancelButton.addEventListener("click", (e) => {
+                contactListingPage.classList = 'd-block bg-secondary mt-3';
+                addNewContact.classList = 'd-none';
+            })
 
-        // Go back to listing page from contact details page 
 
-        goBack.addEventListener("click",(e)=>{
-            contactListingPage.classList = 'd-block';
-            contactDetails.classList = 'd-none';
-            contactListItem.name.remove();
+
+
+
         })
-
-        //delete a contact
-          deleteButton.addEventListener("click",(e)=>{
-            contactDetails.classList = 'd-none';
-            contactListingPage.classList = 'd-block';
-
-
-          })
-
-
-        }
     } catch (error) {
         console.log("Something went wrong while fetching the data");
         document.getElementById('errorAlert').textContent = 'Something went wrong while fetching the data'
     }
+
+
 
 }
