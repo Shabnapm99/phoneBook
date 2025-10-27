@@ -133,12 +133,28 @@ async function fetchContacts() {
                     name: `${firstName} ${lastName}`,
                     email: `${mail}`
                 };
-                console.log(contact);
+
+                
+                // console.log(contact);
                 contacts.push(contact);
-                console.log(contacts);
+
+                // console.log(contacts);
                 display(contacts);
+                
+                
                 contactListingPage.classList = 'd-block bg-secondary mt-3';
+                
                 addNewContact.classList = 'd-none';
+                // num = '';
+                // firstName = '';
+                // lastName = '';
+                // mail = '';// these only reset the variables. not the input ui
+                phoneNum.value = '';
+                fName.value = '';
+                lName.value = '';
+                email.value = '';
+
+
 
             })
             //cancel button in add new conyact page
