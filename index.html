@@ -16,7 +16,7 @@
 <body class="bg-dark" onload="fetchContacts()">
     <!-- container div -->
 
-    <div class="container">
+    <div class="container" id="container">
 
         <div class="row justify-content-center">
             <div class="col-12 col-md-9 col-lg-6 ">
@@ -259,6 +259,25 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal to show if user didnt enter a value and clicked done -->
+
+            <div class="modal fade" tabindex="-1" id="alertModal">
+                <div class="modal-dialog modal-dialog-centered modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- <h5 class="modal-title">Alert</h5> -->
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="alert"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Ok</button>
+                        </div>
                     </div>
                 </div>
             </div>

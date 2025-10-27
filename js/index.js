@@ -18,6 +18,9 @@ async function fetchContacts() {
     let email = document.getElementById('emailInput');
     let doneButton = document.getElementById('doneButton');
     let cancelButton = document.getElementById('cancelButton');
+    // let alertModal = document.getElementById('alertModal');
+
+    let container = document.getElementById('container');
 
     try {
 
@@ -111,12 +114,18 @@ async function fetchContacts() {
             doneButton.addEventListener("click", (e) => {
                 contacts = []; //make the array empty first otherwise it will show first array view plus the replaced array. in this case it will show 21 elemenet if we didn't empty the array here
                 const num = phoneNum.value;
-                
+
                 const firstName = fName.value;
                 const lastName = lName.value;
                 const mail = email.value;
-                if(num==='' || firstName===""){
-                    document.getElementById('alertBox').classList = 'd-block alert alert-dark';
+
+                if (num === '' || firstName === "") {
+                    // alertModal.classList = 'd-block modal';
+
+                    // addNewContact.classList = 'd-none';
+                    const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                    alertModal.show();
+                    document.getElementById('alert').textContent = 'Please enter phone number and name'
                     return;
                 }
                 let contact = {
