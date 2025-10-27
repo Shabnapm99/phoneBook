@@ -20,7 +20,7 @@ async function fetchContacts() {
     let cancelButton = document.getElementById('cancelButton');
     // let alertModal = document.getElementById('alertModal');
 
-    let container = document.getElementById('container');
+    let index = null;// variable to store the 
 
     try {
 
@@ -39,6 +39,7 @@ async function fetchContacts() {
         // Loop through the contacts
 
         function display(contacts) {
+            contactsList.innerHTML = ''; //reset UI 
             for (let i = 0; i < contacts.length; i++) {
 
                 console.log(contacts[i]);
@@ -67,11 +68,15 @@ async function fetchContacts() {
                 // To show all the details on clicking a list item add event listener
 
                 contactListItem.addEventListener("click", (event) => {
+                    index = i;//index will store the value which we are clicking
+
                     contactListingPage.classList = 'd-none';
                     contactDetails.classList = 'd-block';
                     nameOfUser.textContent = `${name}`;
                     phoneNumber.textContent = `${phone}`;
-                    emailId.textContent = `${email}`;
+                    emailId.textContent = `${email}`
+
+                    console.log(i);
 
 
                 })
@@ -84,24 +89,31 @@ async function fetchContacts() {
 
                 })
 
-                //delete a contact
-                deleteButton.addEventListener("click", (e) => {
-                    contactDetails.classList = 'd-none';
-                    contactListingPage.classList = 'd-block bg-secondary mt-3';
-                    // contacts.splice(i,1);
-                    contactListItem.remove()// this is removing all
-                    //contactListItem.removeChild(contactListItem);not working
-                    //yet to be implemented
-
-                })
-
-                // contactListItem.addEventListener("dblclick",()=>{
-                //     contactListItem.remove();
-                // })
-
 
             }
+
+
         }
+
+        //delete a contact
+
+        deleteButton.addEventListener("click", (e) => {
+            contactDetails.classList = 'd-none';
+            contactListingPage.classList = 'd-block bg-secondary mt-3';
+            // console.log(e.target)
+            // contacts.splice(contacts[i], 1);
+            console.log(index);
+            console.log(contacts[index]);
+
+            contacts.splice(index, 1);
+            console.log(contacts);
+            display(contacts);
+
+            // contactListItem.remove()// this is removing all
+            //contactListItem.removeChild(contactListItem);not working
+            //yet to be implemented
+
+        })
 
 
         //Add contact
@@ -112,7 +124,7 @@ async function fetchContacts() {
             // doneButton.className = 'btn text-primary'
 
             doneButton.addEventListener("click", (e) => {
-                contacts = []; //make the array empty first otherwise it will show first array view plus the replaced array. in this case it will show 21 elemenet if we didn't empty the array here
+                // contacts = []; //make the array empty first otherwise it will show first array view plus the replaced array. in this case it will show 21 elemenet if we didn't empty the array here
                 const num = phoneNum.value;
 
                 const firstName = fName.value;
@@ -134,16 +146,16 @@ async function fetchContacts() {
                     email: `${mail}`
                 };
 
-                
-                // console.log(contact);
+
+                console.log(contact);
                 contacts.push(contact);
 
                 // console.log(contacts);
                 display(contacts);
-                
-                
+
+
                 contactListingPage.classList = 'd-block bg-secondary mt-3';
-                
+
                 addNewContact.classList = 'd-none';
                 // num = '';
                 // firstName = '';
@@ -152,7 +164,7 @@ async function fetchContacts() {
                 phoneNum.value = '';
                 fName.value = '';
                 lName.value = '';
-                email.value = '';
+                email.value = '';//cleares the input field
 
 
 
@@ -168,6 +180,8 @@ async function fetchContacts() {
 
 
         })
+
+
     } catch (error) {
         console.log("Something went wrong while fetching the data");
         document.getElementById('errorAlert').textContent = 'Something went wrong while fetching the data'
