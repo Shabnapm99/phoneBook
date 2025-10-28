@@ -182,8 +182,10 @@ async function fetchContacts() {
             console.log(contacts[index]);
 
             let uName = `${contacts[index].name}`;
-            fName.value = uName.split(' ')[0];
-            lName.value = uName.split(' ')[1];
+            let names = uName.split(' ');
+            // uName = uName.trim().replace(/\s+/g, ' ');
+            fName.value = names[0];//split uName to 2 parts maximum with seperator space(incase of 3 names split('dont work as we expect))
+            lName.value = names.slice(1).join(' ');//create an array with slice of names array removing 1st element and join  all the left elements. its useful incase of 3 names otherwise last name will cut off
             phoneNum.value = `${contacts[index].phone}`;
             email.value = `${contacts[index].email}`;
 
