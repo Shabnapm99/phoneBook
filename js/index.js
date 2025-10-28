@@ -19,8 +19,10 @@ async function fetchContacts() {
     let doneButton = document.getElementById('doneButton');
     let cancelButton = document.getElementById('cancelButton');
     // let alertModal = document.getElementById('alertModal');
+    let searchButton = document.getElementById('searchButton');
+    let editButton = document.getElementById('editButton');
 
-    let index = null;// variable to store the 
+    let index = null;// variable to store the index
 
     try {
 
@@ -78,7 +80,6 @@ async function fetchContacts() {
 
                     console.log(i);
 
-
                 })
 
                 // Go back to listing page from contact details page 
@@ -88,11 +89,7 @@ async function fetchContacts() {
                     contactDetails.classList = 'd-none';
 
                 })
-
-
             }
-
-
         }
 
         //delete a contact
@@ -109,12 +106,7 @@ async function fetchContacts() {
             console.log(contacts);
             display(contacts);
 
-            // contactListItem.remove()// this is removing all
-            //contactListItem.removeChild(contactListItem);not working
-            //yet to be implemented
-
         })
-
 
         //Add contact
 
@@ -166,18 +158,69 @@ async function fetchContacts() {
                 lName.value = '';
                 email.value = '';//cleares the input field
 
-
-
             })
-            //cancel button in add new conyact page
+            //cancel button in add new contact page
             cancelButton.addEventListener("click", (e) => {
                 contactListingPage.classList = 'd-block bg-secondary mt-3';
                 addNewContact.classList = 'd-none';
             })
 
+        })
+
+        //search button
+        searchButton.addEventListener("input", () => {
+            console.log("I am getting called");
+        })
 
 
+        //edit button
 
+        editButton.addEventListener('click', () => {
+            console.log("I am getting called")
+            addNewContact.classList = 'd-block';
+            contactDetails.classList = 'd-none';
+            console.log(contacts[index]);
+
+            let uName = `${contacts[index].name}`;
+            fName.value = uName.split(' ')[0];
+            lName.value = uName.split(' ')[1];
+            phoneNum.value = `${contacts[index].phone}`;
+            email.value = `${contacts[index].email}`;
+
+            //done  button in edit page 
+
+            doneButton.addEventListener('click', () => {
+
+                addNewContact.classList = 'd-none';
+                contactDetails.classList = 'd-block';
+                fName.value = fName.value;
+                lName.value = lName.value;
+                phoneNum.value = phoneNum.value;
+                email.value = email.value;
+                uName = `${fName.value} ${lName.value}`;
+                nameOfUser.textContent = `${uName}`;
+                phoneNumber.textContent = `${phoneNum.value}`;
+                emailId.textContent = `${email.value}`;
+
+                //To reflect the edit in contacy listing page
+
+                let contact = {
+                    phone: `${phoneNum.value}`,
+                    name: `${uName}`,
+                    email: `${email.value}`
+                };
+                contacts.splice(index, 1, contact);
+                console.log(contacts);
+                display(contacts);
+
+            })
+
+            //cancel button in edit page
+
+            cancelButton.addEventListener("click", (e) => {
+                contactDetails.classList = 'd-block';
+                addNewContact.classList = 'd-none';
+            })
 
         })
 

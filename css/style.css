@@ -1,4 +1,4 @@
-body{
+body {
     margin: 0;
     padding: 0;
 }
@@ -7,28 +7,28 @@ body{
 
 } */
 
-p{
+p {
     margin: 0;
 }
 
-.bg-grey{
+.bg-grey {
     background-color: rgb(153, 154, 154);
 
 }
 
-.text-grey{
-    color:rgb(153, 154, 154);
+.text-grey {
+    color: rgb(153, 154, 154);
 }
 
-#profileImage svg{
+#profileImage svg {
     width: 12.5em;
 }
-#addDetails input{
-      border: none;
-      border-bottom: 1px solid grey;
+
+#addDetails input {
+    border: none;
+    border-bottom: 1px solid grey;
 }
 
-#profileNName .bi-person-circle{
-  width:8em;
+#profileNName .bi-person-circle {
+    width: 8em;
 }
-
