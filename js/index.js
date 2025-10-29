@@ -21,8 +21,11 @@ async function fetchContacts() {
     // let alertModal = document.getElementById('alertModal');
     let searchButton = document.getElementById('searchButton');
     let editButton = document.getElementById('editButton');
+    let searchBar = document.getElementById('searchBar');
+
 
     let index = null;// variable to store the index
+    let isEditing = false;//since reusing the add contact page in edit page, to avoid adding multiple listeners to done and cancel button use this flag
 
     try {
 
@@ -38,10 +41,13 @@ async function fetchContacts() {
         console.log(contacts);
         display(contacts);
 
-        // Loop through the contacts
-
+        
         function display(contacts) {
-            contactsList.innerHTML = ''; //reset UI 
+
+            contactsList.innerHTML = ''; //reset UI. since we are looping through new array when adding a contact and editing
+
+            // Loop through the contacts
+
             for (let i = 0; i < contacts.length; i++) {
 
                 console.log(contacts[i]);
@@ -65,12 +71,14 @@ async function fetchContacts() {
                                     <p id="contactName">${name}</p>`
 
                 // append li to ul
+
                 contactsList.appendChild(contactListItem);
 
                 // To show all the details on clicking a list item add event listener
 
                 contactListItem.addEventListener("click", (event) => {
-                    index = i;//index will store the value which we are clicking
+
+                    index = i;//index will store the index of contact which we are clicking
 
                     contactListingPage.classList = 'd-none';
                     contactDetails.classList = 'd-block';
@@ -111,27 +119,39 @@ async function fetchContacts() {
         //Add contact
 
         addButton.addEventListener("click", (e) => {
+
+
             contactListingPage.classList = 'd-none';
             addNewContact.classList = 'd-block';
             // doneButton.className = 'btn text-primary'
+            isEditing = false;//make the isEditing flag false when click on a add button.
+        })
 
-            doneButton.addEventListener("click", (e) => {
+        // Add listener to doneButton
+
+        doneButton.addEventListener("click", (e) => {
+
+            if (!isEditing) {
                 // contacts = []; //make the array empty first otherwise it will show first array view plus the replaced array. in this case it will show 21 elemenet if we didn't empty the array here
-                const num = phoneNum.value;
 
+                // Store the entered value to variables
+
+                const num = phoneNum.value;
                 const firstName = fName.value;
                 const lastName = lName.value;
                 const mail = email.value;
 
                 if (num === '' || firstName === "") {
-                    // alertModal.classList = 'd-block modal';
 
                     // addNewContact.classList = 'd-none';
                     const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                     alertModal.show();
-                    document.getElementById('alert').textContent = 'Please enter phone number and name'
+                    document.getElementById('alert').textContent = 'Please enter phone number and name';
                     return;
                 }
+
+                // create an object with the enterd values and push it to contacts array and call display() by passing this new array 
+
                 let contact = {
                     phone: `${num}`,
                     name: `${firstName} ${lastName}`,
@@ -142,35 +162,100 @@ async function fetchContacts() {
                 console.log(contact);
                 contacts.push(contact);
 
-                // console.log(contacts);
                 display(contacts);
 
 
                 contactListingPage.classList = 'd-block bg-secondary mt-3';
 
                 addNewContact.classList = 'd-none';
+                
                 // num = '';
                 // firstName = '';
                 // lastName = '';
                 // mail = '';// these only reset the variables. not the input ui
+
                 phoneNum.value = '';
                 fName.value = '';
                 lName.value = '';
                 email.value = '';//cleares the input field
 
-            })
-            //cancel button in add new contact page
-            cancelButton.addEventListener("click", (e) => {
+                //if isEditing is true run the else logic
+
+            } else {
+                addNewContact.classList = 'd-none';
+                contactDetails.classList = 'd-block';
+                fName.value = fName.value;
+                lName.value = lName.value;
+                phoneNum.value = phoneNum.value;
+                email.value = email.value;
+                let uName = `${contacts[index].name}`;
+                uName = `${fName.value} ${lName.value}`;
+                nameOfUser.textContent = `${uName}`;
+                phoneNumber.textContent = `${phoneNum.value}`;
+                emailId.textContent = `${email.value}`;
+
+                //To reflect the edit in contact listing page
+
+                let contact = {
+                    phone: `${phoneNum.value}`,
+                    name: `${uName}`,
+                    email: `${email.value}`
+                };
+                contacts.splice(index, 1, contact);
+                console.log(contacts);
+                display(contacts);
+
+                phoneNum.value = '';
+                fName.value = '';
+                lName.value = '';
+                email.value = '';//cleares the input field
+            }
+
+
+        })
+
+        //cancel button in add new contact page
+
+        cancelButton.addEventListener("click", (e) => {
+
+            if (!isEditing) {
                 contactListingPage.classList = 'd-block bg-secondary mt-3';
                 addNewContact.classList = 'd-none';
-            })
+                contactDetails.classList = 'd-none';
+                // isEditing = true;
+            } else {
+                contactDetails.classList = 'd-block';
+                addNewContact.classList = 'd-none';
+            }
+
 
         })
+
+
 
         //search button
-        searchButton.addEventListener("input", () => {
-            console.log("I am getting called");
+
+        searchButton.addEventListener("click", () => {
+            // console.log("I am getting called");
+
+            // filter returns a new array if name or phone includes the typed value in seacrhbar
+
+            let filteredContacts = contacts.filter((contacts) => {
+                if (contacts.name.toLowerCase().includes(`${searchBar.value}`) || contacts.phone.includes(`${searchBar.value}`)) {
+                    console.log(`${searchBar.value}`)
+                    return contacts;
+                }
+
+            }
+            )
+            searchBar.value = '';//clears the search bar
+
+            // call display function by passing new filtered array
+
+            display(filteredContacts);
+
         })
+
 
 
         //edit button
@@ -183,46 +268,12 @@ async function fetchContacts() {
 
             let uName = `${contacts[index].name}`;
             let names = uName.split(' ');
-            // uName = uName.trim().replace(/\s+/g, ' ');
-            fName.value = names[0];//split uName to 2 parts maximum with seperator space(incase of 3 names split('dont work as we expect))
+            fName.value = names[0];
             lName.value = names.slice(1).join(' ');//create an array with slice of names array removing 1st element and join  all the left elements. its useful incase of 3 names otherwise last name will cut off
             phoneNum.value = `${contacts[index].phone}`;
             email.value = `${contacts[index].email}`;
 
-            //done  button in edit page 
-
-            doneButton.addEventListener('click', () => {
-
-                addNewContact.classList = 'd-none';
-                contactDetails.classList = 'd-block';
-                fName.value = fName.value;
-                lName.value = lName.value;
-                phoneNum.value = phoneNum.value;
-                email.value = email.value;
-                uName = `${fName.value} ${lName.value}`;
-                nameOfUser.textContent = `${uName}`;
-                phoneNumber.textContent = `${phoneNum.value}`;
-                emailId.textContent = `${email.value}`;
-
-                //To reflect the edit in contacy listing page
-
-                let contact = {
-                    phone: `${phoneNum.value}`,
-                    name: `${uName}`,
-                    email: `${email.value}`
-                };
-                contacts.splice(index, 1, contact);
-                console.log(contacts);
-                display(contacts);
-
-            })
-
-            //cancel button in edit page
-
-            cancelButton.addEventListener("click", (e) => {
-                contactDetails.classList = 'd-block';
-                addNewContact.classList = 'd-none';
-            })
+            isEditing = true; //when clicked on edit button value of isEditing change to true
 
         })
 
