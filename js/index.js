@@ -41,7 +41,7 @@ async function fetchContacts() {
         console.log(contacts);
         display(contacts);
 
-        
+
         function display(contacts) {
 
             contactsList.innerHTML = ''; //reset UI. since we are looping through new array when adding a contact and editing
@@ -81,7 +81,7 @@ async function fetchContacts() {
                     index = i;//index will store the index of contact which we are clicking
 
                     contactListingPage.classList.add('d-none');
-                    contactDetails.classList.replace('d-none','d-block');//replace d-none class with d-block
+                    contactDetails.classList.replace('d-none', 'd-block');//replace d-none class with d-block
                     nameOfUser.textContent = `${name}`;
                     phoneNumber.textContent = `${phone}`;
                     emailId.textContent = `${email}`
@@ -93,9 +93,9 @@ async function fetchContacts() {
                 // Go back to listing page from contact details page 
 
                 goBack.addEventListener("click", (e) => {
-                    
-                    contactListingPage.classList.replace('d-none','d-block');
-                    contactDetails.classList.replace('d-block','d-none') ;
+
+                    contactListingPage.classList.replace('d-none', 'd-block');
+                    contactDetails.classList.replace('d-block', 'd-none');
 
                 })
             }
@@ -107,7 +107,7 @@ async function fetchContacts() {
             contactDetails.classList.add('d-none');
             // contactListingPage.classList.remove('d-none');
             // contactListingPage.classList.add('d-block bg-secondary mt-3');
-            contactListingPage.classList.replace('d-none','d-block');
+            contactListingPage.classList.replace('d-none', 'd-block');
             // console.log(e.target)
             // contacts.splice(contacts[i], 1);
             console.log(index);
@@ -125,7 +125,7 @@ async function fetchContacts() {
 
 
             contactListingPage.classList.add('d-none');
-            addNewContact.classList.replace('d-none','d-block');
+            addNewContact.classList.replace('d-none', 'd-block');
             // doneButton.className = 'btn text-primary'
             isEditing = false;//make the isEditing flag false when click on a add button.
         })
@@ -146,7 +146,7 @@ async function fetchContacts() {
 
                 if (num === '' || firstName === "") {
 
-                    
+
                     const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                     alertModal.show();
                     document.getElementById('alert').textContent = 'Please enter phone number and name';
@@ -168,10 +168,10 @@ async function fetchContacts() {
                 display(contacts);
 
 
-                contactListingPage.classList.replace('d-none','d-block'); 
+                contactListingPage.classList.replace('d-none', 'd-block');
 
-                addNewContact.classList.replace('d-block','d-none');
-                
+                addNewContact.classList.replace('d-block', 'd-none');
+
                 // num = '';
                 // firstName = '';
                 // lastName = '';
@@ -185,8 +185,8 @@ async function fetchContacts() {
                 //if isEditing is true run the else logic
 
             } else {
-                addNewContact.classList.replace('d-block','d-none');
-                contactDetails.classList.replace('d-none','d-block');
+                addNewContact.classList.replace('d-block', 'd-none');
+                contactDetails.classList.replace('d-none', 'd-block');
                 fName.value = fName.value;
                 lName.value = lName.value;
                 phoneNum.value = phoneNum.value;
@@ -222,13 +222,13 @@ async function fetchContacts() {
         cancelButton.addEventListener("click", (e) => {
 
             if (!isEditing) {
-                contactListingPage.classList.replace('d-none','d-block');
-                addNewContact.classList.replace('d-block','d-none');
-                contactDetails.classList.replace('d-block','d-none');
+                contactListingPage.classList.replace('d-none', 'd-block');
+                addNewContact.classList.replace('d-block', 'd-none');
+                contactDetails.classList.replace('d-block', 'd-none');
                 // isEditing = true;
             } else {
-                contactDetails.classList.replace('d-none','d-block');
-                addNewContact.classList.replace('d-block','d-none');
+                contactDetails.classList.replace('d-none', 'd-block');
+                addNewContact.classList.replace('d-block', 'd-none');
                 //when we click on editing these fields will get filled with the details. Remove those as well when cancel the page. otherwise when we click on add button after the editing cancelled, the values will be there
                 phoneNum.value = '';
                 fName.value = '';
@@ -247,16 +247,17 @@ async function fetchContacts() {
             // console.log("I am getting called");
 
             // filter returns a new array if name or phone includes the typed value in seacrhbar
-
+            let name = searchBar.value.toLowerCase();
             let filteredContacts = contacts.filter((contacts) => {
-                if (contacts.name.toLowerCase().includes(`${searchBar.value}`) || contacts.phone.includes(`${searchBar.value}`)) {
-                    console.log(`${searchBar.value}`)
+
+                if (contacts.name.toLowerCase().includes(`${name}`) || contacts.phone.includes(`${searchBar.value}`)) {
+                    console.log(`${searchBar.value}`);
                     return contacts;
                 }
 
             }
             )
-            
+
 
             // call display function by passing new filtered array
 
