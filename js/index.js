@@ -80,8 +80,8 @@ async function fetchContacts() {
 
                     index = i;//index will store the index of contact which we are clicking
 
-                    contactListingPage.classList = 'd-none';
-                    contactDetails.classList = 'd-block';
+                    contactListingPage.classList.add('d-none');
+                    contactDetails.classList.replace('d-none','d-block');//replace d-none class with d-block
                     nameOfUser.textContent = `${name}`;
                     phoneNumber.textContent = `${phone}`;
                     emailId.textContent = `${email}`
@@ -93,8 +93,9 @@ async function fetchContacts() {
                 // Go back to listing page from contact details page 
 
                 goBack.addEventListener("click", (e) => {
-                    contactListingPage.classList = 'd-block bg-secondary mt-3';
-                    contactDetails.classList = 'd-none';
+                    
+                    contactListingPage.classList.replace('d-none','d-block');
+                    contactDetails.classList.replace('d-block','d-none') ;
 
                 })
             }
@@ -103,8 +104,10 @@ async function fetchContacts() {
         //delete a contact
 
         deleteButton.addEventListener("click", (e) => {
-            contactDetails.classList = 'd-none';
-            contactListingPage.classList = 'd-block bg-secondary mt-3';
+            contactDetails.classList.add('d-none');
+            // contactListingPage.classList.remove('d-none');
+            // contactListingPage.classList.add('d-block bg-secondary mt-3');
+            contactListingPage.classList.replace('d-none','d-block');
             // console.log(e.target)
             // contacts.splice(contacts[i], 1);
             console.log(index);
@@ -121,8 +124,8 @@ async function fetchContacts() {
         addButton.addEventListener("click", (e) => {
 
 
-            contactListingPage.classList = 'd-none';
-            addNewContact.classList = 'd-block';
+            contactListingPage.classList.add('d-none');
+            addNewContact.classList.replace('d-none','d-block');
             // doneButton.className = 'btn text-primary'
             isEditing = false;//make the isEditing flag false when click on a add button.
         })
@@ -143,7 +146,7 @@ async function fetchContacts() {
 
                 if (num === '' || firstName === "") {
 
-                    // addNewContact.classList = 'd-none';
+                    
                     const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                     alertModal.show();
                     document.getElementById('alert').textContent = 'Please enter phone number and name';
@@ -165,9 +168,9 @@ async function fetchContacts() {
                 display(contacts);
 
 
-                contactListingPage.classList = 'd-block bg-secondary mt-3';
+                contactListingPage.classList.replace('d-none','d-block'); 
 
-                addNewContact.classList = 'd-none';
+                addNewContact.classList.replace('d-block','d-none');
                 
                 // num = '';
                 // firstName = '';
@@ -182,8 +185,8 @@ async function fetchContacts() {
                 //if isEditing is true run the else logic
 
             } else {
-                addNewContact.classList = 'd-none';
-                contactDetails.classList = 'd-block';
+                addNewContact.classList.replace('d-block','d-none');
+                contactDetails.classList.replace('d-none','d-block');
                 fName.value = fName.value;
                 lName.value = lName.value;
                 phoneNum.value = phoneNum.value;
@@ -219,13 +222,18 @@ async function fetchContacts() {
         cancelButton.addEventListener("click", (e) => {
 
             if (!isEditing) {
-                contactListingPage.classList = 'd-block bg-secondary mt-3';
-                addNewContact.classList = 'd-none';
-                contactDetails.classList = 'd-none';
+                contactListingPage.classList.replace('d-none','d-block');
+                addNewContact.classList.replace('d-block','d-none');
+                contactDetails.classList.replace('d-block','d-none');
                 // isEditing = true;
             } else {
-                contactDetails.classList = 'd-block';
-                addNewContact.classList = 'd-none';
+                contactDetails.classList.replace('d-none','d-block');
+                addNewContact.classList.replace('d-block','d-none');
+                //when we click on editing these fields will get filled with the details. Remove those as well when cancel the page. otherwise when we click on add button after the editing cancelled, the values will be there
+                phoneNum.value = '';
+                fName.value = '';
+                lName.value = '';
+                email.value = '';//cleares the input field
             }
 
 
