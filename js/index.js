@@ -256,11 +256,12 @@ async function fetchContacts() {
 
             }
             )
-            searchBar.value = '';//clears the search bar
+            
 
             // call display function by passing new filtered array
 
             display(filteredContacts);
+            searchBar.value = '';//clears the search bar
 
         })
 
